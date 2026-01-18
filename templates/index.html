@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}ShopEasy - Products{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Welcome to ShopEasy</h1>
+        <p>Discover amazing products at great prices</p>
+    </div>
+
+    {% if category %}
+        <div class="category-header">
+            <h2>{{ category }}</h2>
+            <a href="{{ url_for('index') }}">View All Products</a>
+        </div>
+    {% endif %}
+
+    {% if search_query %}
+        <div class="search-results">
+            <h2>Search Results for "{{ search_query }}"</h2>
+            <p>{{ products|length }} products found</p>
+        </div>
+    {% endif %}
+
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-image">
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" 
+                     alt="{{ product.name }}"
+                     onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">
+                {% if product.stock < 10 %}
+                    <span class="stock-badge low-stock">Low Stock</span>
+                {% endif %}
+            </div>
+            <div class="product-info">
+                <span class="product-category">{{ product.category }}</span>
+                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+                <p class="product-description">{{ product.description[:100] }}...</p>
+                
+                <div class="product-meta">
+                    <div class="rating">
+                        {% for i in range(5) %}
+                            {% if i < product.rating|int %}
+                                <i class="fas fa-star"></i>
+                            {% elif i < product.rating %}
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span>{{ product.rating }}</span>
+                    </div>
+                    <div class="stock">
+                        <i class="fas fa-box"></i>
+                        {{ product.stock }} in stock
+                    </div>
+                </div>
+                
+                <div class="product-footer">
+                    <div class="price">${{ "%.2f"|format(product.price) }}</div>
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn-view">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-products">
+            <i class="fas fa-search fa-3x"></i>
+            <h3>No products found</h3>
+            <p>Try searching for something else or browse our categories</p>
+            <a href="{{ url_for('index') }}" class="btn-primary">Back to Home</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

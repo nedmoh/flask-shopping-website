@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Login - ShopEasy{% endblock %}
+
+{% block content %}
+<div class="container auth-container">
+    <div class="auth-card">
+        <h2>Login to ShopEasy</h2>
+        <p>Access your account to save items and view order history</p>
+        
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required 
+                       placeholder="Enter your username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required 
+                       placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="btn-primary btn-login">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Demo accounts:</p>
+            <div class="demo-accounts">
+                <div class="demo-account">
+                    <strong>Admin:</strong> admin / admin123
+                </div>
+                <div class="demo-account">
+                    <strong>Customer:</strong> customer / customer123
+                </div>
+            </div>
+            <p class="register-link">
+                Don't have an account? <a href="#">Contact administrator</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
